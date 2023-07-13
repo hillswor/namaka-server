@@ -89,7 +89,7 @@ class Logout(Resource):
         return make_response(jsonify({"message": "Logged out"}), 200)
 
 
-api.add_resource(Logout, "/api/logout")
+api.add_resource(Logout, "/logout")
 
 
 class CheckSession(Resource):
