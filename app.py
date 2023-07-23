@@ -33,11 +33,15 @@ def create_app():
 app = create_app()
 api = Api(app)
 
+class HomePage(Resource):
+    def get(self):
+        return "Welcome to the Namaka API"
+    
+api.add_resource(HomePage, "/")
+
+
 
 class UserResource(Resource):
-    def get(self):
-        return "Hello, World!"
-
     def post(self):
         data = request.get_json()
         first_name = data.get("firstName")
