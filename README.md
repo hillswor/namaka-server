@@ -18,7 +18,7 @@
   <p align="center">
     The server side of a full-stack application that creates an API for the Next.js front end to interact and pull data from.  The API is connected to a PostgreSQL database hosted by Render.  The app enables reef tank enthusiasts to monitor crucial water parameters and interact with one another through a message board.
     <br />
-    <a href="https://namaka-client.vercel.app/">View API</a>
+    <a href="https://namaka-server.onrender.com">View API</a>
     ·
     <a href="https://github.com/hillswor/namaka-server/issues">Report Bug</a>
     ·
@@ -53,11 +53,6 @@
 
 ## About The Project
 
-<div align="center">
-    <img src="screenshots/namaka-root-img.png" alt="Screenshot of Home Page" width="400" height="300">
-</div>
-
-
 With Namaka, users can track and manage aspects of their saltwater aquariums. The user-friendly platform enables users to monitor various parameters crucial to maintaining a healthy aquatic environment. Each aquarium gets its dedicated dashboard, where you can log information, analyze trends, and optimize care routines.
 
 Moreover, Namaka aims to be home to a thriving community with an interactive message board that allows users to ask questions, share experiences, offer advice, or simply engage in conversation.
@@ -68,9 +63,8 @@ Moreover, Namaka aims to be home to a thriving community with an interactive mes
 
 ### Built With
 
- [![Next][Next.js]][Next-url]
- [![React][React.js]][React-url]
- [![TailwindCSS][Tailwind]][Tailwind-url]
+ [![Python][Python]][Python-url]
+ [![Flask][Flask]][Flask-url]
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -78,72 +72,104 @@ Moreover, Namaka aims to be home to a thriving community with an interactive mes
 
 ## Getting Started
 
-First, run the development server:
+First, install dependencies and enter your virtual environment:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+$ pipenv install && pipenv shell
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+You will need to connect your application to your own PostgreSQL database to test the code.  To do so, add a .env file to the root directory and save the link to your database under the variable "DATABASE_URI".  
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+```
+# .env file
+DATABASE_URI="Your Link"
+```
+Sessions are used in this API, so you will also need to generate a secret key and save it in the .env file under a variable named SECRET_KEY.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```bash
+$ python
+>>> import secrets
+# Generate a random secret key with 32 bytes (256 bits) of entropy
+>>> secret_key = secrets.token_hex(16)
+>>> print(secret_key)
+bea9a8fc2d70cfc4098759c2cc682975
+```
+```
+# .env file
+SECRET_KEY="bea9a8fc2d70cfc4098759c2cc682975"
+```
+Next, apply the database migrations:
+```
+$ flask db upgrade
+```
+Then start your development server using Gunicorn:
+
+```bash
+$ gunicorn app:app
+```
+You have the option of seeding the database:
+```bash
+$ python seed.py
+```
+Open [http://localhost:8000](http://localhost:8000) with your browser to see the result.
+
+Database models are in the models.py file.  The routes use Flask RESTful and are in app.py.  Be sure to update the seed file and run migrations accordingly if there are any changes made to the database models.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Usage
 
-Once logged in, users can go to the "My Account" page to edit or delete existing aquariums.
+The app is currently comprised of the following routes found in app.py:
 
-<div align="center">
-    <img src="screenshots/namaka-my-account.png" alt="Screenshot of 'My Account' page" width="400" height="300">
-</div>
-<br />
-Clicking "View" will take the user to the aquarium page where they can view a chart of all the logged water parameters for that aquarium or log new parameters.
-<br />
-<br />
-<div align="center">
-    <img src="screenshots/namaka-aquarium-page.png" alt="Screenshot of 'Aquarium' page" width="400" height="300">
-</div>
-<br />
-<div align="center">
-    <img src="screenshots/namaka-water-parameters.png" alt="Screenshot of 'Water Parameter' page" width="400" height="300">
-</div>
-<br />
-Users can also communicate with other users via the message board(The majority of current messages are from seed data via the Faker library so it is jibberish)
-<br />
-<br />
-<div align="center">
-    <img src="screenshots/namaka-message-board.png" alt="Screenshot of 'Message Board' page" width="400" height="300">
-</div>
-<br />
-<div align="center">
-    <img src="screenshots/namaka-comment-form.png" alt="Screenshot of comment form on 'Message Board'" width="400" height="300">
-</div>
-<br />
-<div align="center">
-    <img src="screenshots/namaka-comment-form.png" alt="Screenshot of comment form on 'Message Board'" width="400" height="300">
-</div>
-<br />
-<div align="center">
-    <img src="screenshots/namaka-comment-posted.png" alt="Screenshot of comment posted" width="400" height="300">
-</div>
+```
+GET "/"
+```
+Displays a welcome message.
+```
+POST "/users"
+```
+Adds new user to app.
+```
+POST "/login"
+```
+Validates login information and logs the user in.
+```
+Post "/logout"
+```
+Logs the user out of current session.
+```
+GET "/check-session"
+```
+Checks if there is a user signed in to the session.
+```
+POST "/aquariums"
+```
+Adds a new aquarium under the logged in user.
+```
+GET "/aquariums/<int:id>"
+PATCH "/aquariums/<int:id>"
+DELETE "/aquariums/<int:id>"
+```
+Allows the user to view, edit or delete an existing aquarium by providing its unique identifier in the URL.
+```
+POST "/water-parameters"
+```
+Logs water parameters for an existing aquarium.
+```
+GET "/posts"
+```
+Displays all posts.
+```
+POST "/comments"
+```
+Adds a comment to a user's post.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Roadmap
 
-- [ ] Add ability for user to upload photo of their aquarium
-- [ ] Add ability for users to follow/friend other users 
-- [ ] Add ability for aquarium owner to temporarily share aquarium with follower/friend
-  - [ ] Grant access to log parameters to shared follower/friend
-- [ ] Change my account page to tabs
-- [ ] Add search and filters to message board
+- [ ] Adjust models to allow aquarium owners to share their aquariums
+- [ ] Add CRUD functionality to the Post, Comment and WaterParameter models
 
 See the [open issues](https://github.com/hillswor/namaka-client/issues) for a full list of proposed features (and known issues).
 
@@ -170,20 +196,13 @@ Distributed under the MIT License. See `LICENSE.md` for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
-<!-- CONTACT -->
 ## Contact
 
 Bruce Hillsworth - [@bhillsworth](https://twitter.com/bhillsworth) - bruce.hillsworth@gmail.com
 
-Project Link: [https://github.com/hillswor/namaka-client](https://github.com/hillswor/namaka-client)
+Project Link: [https://github.com/hillswor/namaka-server](https://github.com/hillswor/namaka-server)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-## Acknowledgments
-
-* [Dave Gray](https://www.youtube.com/watch?v=843nec-IvW0&t=3096s)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -200,9 +219,8 @@ Project Link: [https://github.com/hillswor/namaka-client](https://github.com/hil
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/bruce-hillsworth
 [product-screenshot]: images/screenshot.png
-[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
-[Next-url]: https://nextjs.org/
-[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
-[React-url]: https://reactjs.org/
-[Tailwind]: https://img.shields.io/badge/tailwindcss-000000?style=for-the-badge&logo=tailwindcss&logoColor=61DAFB
-[Tailwind-url]: https://tailwindcss.com/
+[Python]: https://img.shields.io/badge/Python-000000?style=for-the-badge&logo=python&logoColor=#3776AB
+[Python-url]: https://docs.python.org/3/
+[Flask]: https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=ffffff
+[Flask-url]: https://flask.palletsprojects.com/en/2.3.x/
+

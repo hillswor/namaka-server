@@ -196,10 +196,6 @@ class WaterParameterResource(Resource):
 
 api.add_resource(WaterParameterResource, "/water-parameters")
 
-
-# Post routes
-
-
 class PostResource(Resource):
     def get(self):
         posts = Post.query.all()
