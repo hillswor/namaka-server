@@ -206,16 +206,16 @@ Project Link: [https://github.com/hillswor/namaka-server](https://github.com/hil
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-[contributors-shield]: https://img.shields.io/github/contributors/hillswor/namaka-client.svg?style=for-the-badge
-[contributors-url]: https://github.com/hillswor/namaka-client/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/hillswor/namaka-client.svg?style=for-the-badge
-[forks-url]: https://github.com/hillswor/namaka-client/network/members
-[stars-shield]: https://img.shields.io/github/stars/hillswor/namaka-client.svg?style=for-the-badge
-[stars-url]: https://github.com/hillswor/namaka-client/stargazers
-[issues-shield]: https://img.shields.io/github/issues/hillswor/namaka-client.svg?style=for-the-badge
-[issues-url]: https://github.com/hillswor/namaka-client/issues
-[license-shield]: https://img.shields.io/github/license/hillswor/namaka-client.svg?style=for-the-badge
-[license-url]: https://github.com/hillswor/namaka-client/blob/master/LICENSE.md
+[contributors-shield]: https://img.shields.io/github/contributors/hillswor/namaka-server.svg?style=for-the-badge
+[contributors-url]: https://github.com/hillswor/namaka-server/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/hillswor/namaka-server.svg?style=for-the-badge
+[forks-url]: https://github.com/hillswor/namaka-server/network/members
+[stars-shield]: https://img.shields.io/github/stars/hillswor/namaka-server.svg?style=for-the-badge
+[stars-url]: https://github.com/hillswor/namaka-server/stargazers
+[issues-shield]: https://img.shields.io/github/issues/hillswor/namaka-server.svg?style=for-the-badge
+[issues-url]: https://github.com/hillswor/namaka-server/issues
+[license-shield]: https://img.shields.io/github/license/hillswor/namaka-server.svg?style=for-the-badge
+[license-url]: https://github.com/hillswor/namaka-server/blob/master/LICENSE.md
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/bruce-hillsworth
 [product-screenshot]: images/screenshot.png
