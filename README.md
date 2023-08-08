@@ -204,8 +204,6 @@ Project Link: [https://github.com/hillswor/namaka-server](https://github.com/hil
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 [contributors-shield]: https://img.shields.io/github/contributors/hillswor/namaka-server.svg?style=for-the-badge
 [contributors-url]: https://github.com/hillswor/namaka-server/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/hillswor/namaka-server.svg?style=for-the-badge
