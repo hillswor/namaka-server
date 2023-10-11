@@ -4,9 +4,10 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Api, Resource
 from flask_bcrypt import check_password_hash
 from dotenv import load_dotenv
+from flask_session import Session
 from datetime import date
 import os
-import ipdb
+
 
 from models import User, Aquarium, WaterParameter, Post, Comment, UserAquarium
 from extensions import db, migrate
@@ -21,8 +22,11 @@ def create_app():
 
     app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URI")
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config['SESSION_TYPE'] = 'filesystem'
     app.json.compact = False
     app.secret_key = os.getenv("SECRET_KEY")
+
+    Session(app)
 
     db.init_app(app)
     migrate.init_app(app, db)
@@ -33,12 +37,13 @@ def create_app():
 app = create_app()
 api = Api(app)
 
+
 class HomePage(Resource):
     def get(self):
         return "Welcome to the Namaka API"
-    
-api.add_resource(HomePage, "/")
 
+
+api.add_resource(HomePage, "/")
 
 
 class UserResource(Resource):
@@ -80,8 +85,9 @@ class Login(Resource):
 
         if user and check_password_hash(user.password, password):
             session["user_id"] = user.id
+            session.modified = True  # Mark the session as modified
+            session.save()  # Save the session data
             return make_response(jsonify(user.to_dict()), 200)
-        return make_response(jsonify({"error": "Invalid email or password"}), 401)
 
 
 api.add_resource(Login, "/login")
@@ -195,6 +201,7 @@ class WaterParameterResource(Resource):
 
 
 api.add_resource(WaterParameterResource, "/water-parameters")
+
 
 class PostResource(Resource):
     def get(self):
