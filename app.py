@@ -87,7 +87,6 @@ class Login(Resource):
             if user and check_password_hash(user.password, password):
                 session["user_id"] = user.id
                 session.modified = True  # Mark the session as modified
-                session.save()  # Save the session data
                 return make_response(jsonify(user.to_dict()), 200)
             else:
                 return make_response(jsonify({"error": "Invalid credentials"}), 401)
